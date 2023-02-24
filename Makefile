@@ -11,8 +11,8 @@ asset:
 fetchDep:
 	go get -v golang.org/x/mobile/cmd/...
 	mkdir -p $(shell go env GOPATH)/src/v2ray.com/core
-	git clone https://github.com/v2fly/v2ray-core.git $(shell go env GOPATH)/src/v2ray.com/core
-	go get -d github.com/2dust/AndroidLibV2rayLite
+	git clone https://github.com/imannamdari/v2ray-core.git $(shell go env GOPATH)/src/v2ray.com/core
+	go get -d github.com/imannamdari/AndroidLibV2rayLite
 
 ANDROID_HOME=$(HOME)/android-sdk-linux
 export ANDROID_HOME
@@ -25,7 +25,7 @@ downloadGoMobile:
 
 BuildMobile:
 	gomobile init
-	gomobile bind -v -ldflags='-s -w' github.com/2dust/AndroidLibV2rayLite
+	gomobile bind -v -ldflags='-s -w' github.com/imannamdari/AndroidLibV2rayLite
 
 all: asset pb fetchDep
 	@echo DONE

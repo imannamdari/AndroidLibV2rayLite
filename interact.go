@@ -17,16 +17,16 @@ import (
 	"github.com/2dust/AndroidLibV2rayLite/VPN"
 	mobasset "golang.org/x/mobile/asset"
 
-	v2core "github.com/v2fly/v2ray-core/v4"
-	v2net "github.com/v2fly/v2ray-core/v4/common/net"
-	v2filesystem "github.com/v2fly/v2ray-core/v4/common/platform/filesystem"
-	v2stats "github.com/v2fly/v2ray-core/v4/features/stats"
-	v2serial "github.com/v2fly/v2ray-core/v4/infra/conf/serial"
-	_ "github.com/v2fly/v2ray-core/v4/main/distro/all"
-	v2internet "github.com/v2fly/v2ray-core/v4/transport/internet"
+	v2core "github.com/imannamdari/v2ray-core/v5"
+	v2net "github.com/imannamdari/v2ray-core/v5/common/net"
+	v2filesystem "github.com/imannamdari/v2ray-core/v5/common/platform/filesystem"
+	v2stats "github.com/imannamdari/v2ray-core/v5/features/stats"
+	v2serial "github.com/imannamdari/v2ray-core/v5/infra/conf/serial"
+	_ "github.com/imannamdari/v2ray-core/v5/main/distro/all"
+	v2internet "github.com/imannamdari/v2ray-core/v5/transport/internet"
 
-	v2applog "github.com/v2fly/v2ray-core/v4/app/log"
-	v2commlog "github.com/v2fly/v2ray-core/v4/common/log"
+	v2applog "github.com/imannamdari/v2ray-core/v5/app/log"
+	v2commlog "github.com/imannamdari/v2ray-core/v5/common/log"
 )
 
 const (
