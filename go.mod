@@ -3,7 +3,7 @@ module github.com/imannamdari/AndroidLibV2rayLite
 go 1.19
 
 require (
-	github.com/imannamdari/v2ray-core/v5 v5.0.0
+	github.com/imannamdari/v2ray-core/v5 v5.0.1
 	golang.org/x/mobile v0.0.0-20190719004257-d2bd2a29d028
 	golang.org/x/sys v0.5.0
 )
