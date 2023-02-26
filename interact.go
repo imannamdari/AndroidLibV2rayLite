@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/imannamdari/AndroidLibV2rayLite/VPN"
+	"github.com/miekg/dns"
 	mobasset "golang.org/x/mobile/asset"
 
 	v2core "github.com/imannamdari/v2ray-core/v5"
@@ -33,7 +34,8 @@ const (
 	v2Asset = "v2ray.location.asset"
 )
 
-/*V2RayPoint V2Ray Point Server
+/*
+V2RayPoint V2Ray Point Server
 This is territory of Go, so no getter and setters!
 */
 type V2RayPoint struct {
@@ -111,7 +113,7 @@ func (v *V2RayPoint) StopLoop() (err error) {
 	return
 }
 
-//Delegate Funcation
+// Delegate Funcation
 func (v V2RayPoint) QueryStats(tag string, direct string) int64 {
 	if v.statsManager == nil {
 		return 0
@@ -130,6 +132,42 @@ func (v *V2RayPoint) shutdownInit() {
 	v.statsManager = nil
 }
 
+func fetchECH() (string, error) {
+	c := dns.Client{Timeout: 10 * time.Second}
+
+	d := dns.Fqdn("crypto.cloudflare.com")
+	q := dns.Question{
+		Name:   d,
+		Qtype:  dns.TypeHTTPS,
+		Qclass: dns.ClassINET,
+	}
+
+	dnsAddr := "1.1.1.1:53"
+
+	r, _, err := c.Exchange(&dns.Msg{
+		MsgHdr: dns.MsgHdr{
+			Id:               dns.Id(),
+			RecursionDesired: true,
+		},
+		Question: []dns.Question{q},
+	}, dnsAddr)
+	if err != nil {
+		return "", err
+	}
+
+	for _, v := range r.Answer {
+		if vv, ok := v.(*dns.HTTPS); ok {
+			for _, vvv := range vv.SVCB.Value {
+				if vvv.Key().String() == "ech" {
+					return vvv.String(), nil
+				}
+			}
+		}
+	}
+
+	return "", errors.New("failed to found ech in response")
+}
+
 func (v *V2RayPoint) pointloop() error {
 	log.Println("loading v2ray config")
 	config, err := v2serial.LoadJSONConfig(strings.NewReader(v.ConfigureFileContent))
@@ -139,6 +177,11 @@ func (v *V2RayPoint) pointloop() error {
 	}
 
 	log.Println("new v2ray core")
+	log.Printf("file config = %s\n", v.ConfigureFileContent)
+	log.Printf("v2ray config = %v\n", config)
+	ech, _ := fetchECH()
+	log.Printf("ech before v2ray = %s\n", ech)
+
 	v.Vpoint, err = v2core.New(config)
 	if err != nil {
 		v.Vpoint = nil
@@ -194,7 +237,7 @@ func InitV2Env(envPath string) {
 	}
 }
 
-//Delegate Funcation
+// Delegate Funcation
 func TestConfig(ConfigureFileContent string) error {
 	_, err := v2serial.LoadJSONConfig(strings.NewReader(ConfigureFileContent))
 	return err
@@ -245,7 +288,8 @@ func CheckVersion() int {
 	return 23
 }
 
-/*CheckVersionX string
+/*
+CheckVersionX string
 This func will return libv2ray binding version and V2Ray version used.
 */
 func CheckVersionX() string {
