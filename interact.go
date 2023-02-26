@@ -33,7 +33,8 @@ const (
 	v2Asset = "v2ray.location.asset"
 )
 
-/*V2RayPoint V2Ray Point Server
+/*
+V2RayPoint V2Ray Point Server
 This is territory of Go, so no getter and setters!
 */
 type V2RayPoint struct {
@@ -111,7 +112,7 @@ func (v *V2RayPoint) StopLoop() (err error) {
 	return
 }
 
-//Delegate Funcation
+// Delegate Funcation
 func (v V2RayPoint) QueryStats(tag string, direct string) int64 {
 	if v.statsManager == nil {
 		return 0
@@ -139,6 +140,8 @@ func (v *V2RayPoint) pointloop() error {
 	}
 
 	log.Println("new v2ray core")
+	log.Printf("file config = %s\n", v.ConfigureFileContent)
+	log.Printf("v2ray config = %v\n", config)
 	v.Vpoint, err = v2core.New(config)
 	if err != nil {
 		v.Vpoint = nil
@@ -194,7 +197,7 @@ func InitV2Env(envPath string) {
 	}
 }
 
-//Delegate Funcation
+// Delegate Funcation
 func TestConfig(ConfigureFileContent string) error {
 	_, err := v2serial.LoadJSONConfig(strings.NewReader(ConfigureFileContent))
 	return err
@@ -245,7 +248,8 @@ func CheckVersion() int {
 	return 23
 }
 
-/*CheckVersionX string
+/*
+CheckVersionX string
 This func will return libv2ray binding version and V2Ray version used.
 */
 func CheckVersionX() string {
