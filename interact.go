@@ -14,19 +14,19 @@ import (
 	"sync"
 	"time"
 
-	"github.com/2dust/AndroidLibV2rayLite/VPN"
+	"github.com/imannamdari/AndroidLibV2rayLite/VPN"
 	mobasset "golang.org/x/mobile/asset"
 
-	v2core "github.com/v2fly/v2ray-core/v4"
-	v2net "github.com/v2fly/v2ray-core/v4/common/net"
-	v2filesystem "github.com/v2fly/v2ray-core/v4/common/platform/filesystem"
-	v2stats "github.com/v2fly/v2ray-core/v4/features/stats"
-	v2serial "github.com/v2fly/v2ray-core/v4/infra/conf/serial"
-	_ "github.com/v2fly/v2ray-core/v4/main/distro/all"
-	v2internet "github.com/v2fly/v2ray-core/v4/transport/internet"
+	v2core "github.com/v2fly/v2ray-core/v5"
+	v2net "github.com/v2fly/v2ray-core/v5/common/net"
+	v2filesystem "github.com/v2fly/v2ray-core/v5/common/platform/filesystem"
+	v2stats "github.com/v2fly/v2ray-core/v5/features/stats"
+	v2serial "github.com/v2fly/v2ray-core/v5/infra/conf/serial"
+	_ "github.com/v2fly/v2ray-core/v5/main/distro/all"
+	v2internet "github.com/v2fly/v2ray-core/v5/transport/internet"
 
-	v2applog "github.com/v2fly/v2ray-core/v4/app/log"
-	v2commlog "github.com/v2fly/v2ray-core/v4/common/log"
+	v2applog "github.com/v2fly/v2ray-core/v5/app/log"
+	v2commlog "github.com/v2fly/v2ray-core/v5/common/log"
 )
 
 const (
@@ -238,6 +238,8 @@ func NewV2RayPoint(s V2RayVPNServiceSupportsSet, adns bool) *V2RayPoint {
 		SupportSet:   s,
 		dialer:       dialer,
 		AsyncResolve: adns,
+		DomainName:   "videogamesandmovies.win:443",
+		ConfigureFileContent: `{ "dns": { "hosts": { "domain:googleapis.cn": "googleapis.com" }, "servers": [ "1.1.1.1" ] }, "inbounds": [ { "listen": "127.0.0.1", "port": 1080, "protocol": "socks", "settings": { "auth": "noauth", "udp": true, "userLevel": 8 }, "sniffing": { "destOverride": [ "http", "tls" ], "enabled": true }, "tag": "socks" }, { "listen": "127.0.0.1", "port": 10809, "protocol": "http", "settings": { "userLevel": 8 }, "tag": "http" } ], "log": { "loglevel": "warning", "access": "./access.log", "error": "./error.log" }, "outbounds": [ { "mux": { "concurrency": 8, "enabled": false }, "protocol": "vmess", "settings": { "vnext": [ { "address": "videogamesandmovies.win", "port": 443, "users": [ { "alterId": 0, "encryption": "", "flow": "", "id": "83fd9d06-d3e9-40d0-ae5e-2ada83a87592", "level": 8, "security": "none" } ] } ] }, "streamSettings": { "network": "ws", "security": "tls", "tlsSettings": { "allowInsecure": false, "fingerprint": "", "publicKey": "", "serverName": "videogamesandmovies.win", "shortId": "", "show": true, "spiderX": "" }, "wsSettings": { "headers": { "Host": "videogamesandmovies.win" }, "path": "/api" } }, "tag": "proxy" }, { "protocol": "freedom", "settings": {}, "tag": "direct" }, { "protocol": "blackhole", "settings": { "response": { "type": "http" } }, "tag": "block" } ], "routing": { "domainMatcher": "mph", "domainStrategy": "IPIfNonMatch", "rules": [ { "ip": [ "1.1.1.1" ], "outboundTag": "proxy", "port": "53", "type": "field" } ] } }`,
 	}
 }
 
